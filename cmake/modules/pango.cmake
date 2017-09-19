@@ -19,6 +19,7 @@
 
 # Module for determining all configuration variables for libpango.
 
+
 if(PKG_CONFIG_EXECUTABLE)
   pkg_check_pkgconfig(
   pango
@@ -40,9 +41,20 @@ if(PKG_CONFIG_EXECUTABLE)
     )
   endif(NOT PANGOFT2_LINK_FLAGS)
 else(PKG_CONFIG_EXECUTABLE)
-  message(STATUS
-  "WARNING: pango not found because pkg-config not available."
-  )
+  find_package(pango)
+  if(PANGO_FOUND)
+    include_directories(${PANGO_INCLUDE_DIRS} ${PANGOFT2_INCLUDE_DIRS})
+    link_libraries(${PANGO_LIBRARIES} ${PANGOFT2_LIBRARIES})  
+
+    find_library(PANGOWIN32_LIB
+      NAMES pangowin32 pangowin32-1.0)
+    link_libraries(${PANGOWIN32_LIB})    
+
+    set(HAVE_PANGO ON)
+    message(STATUS "pango found using find_package")
+  else(PANGO_FOUND)
+    message(WARNING "WARNING: pkg-config not available and pango not found using find_package")
+  endif(PANGO_FOUND)
 endif(PKG_CONFIG_EXECUTABLE)
 
 if(PANGO_LINK_FLAGS AND PANGOFT2_LINK_FLAGS)

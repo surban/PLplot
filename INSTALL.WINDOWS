@@ -1,0 +1,40 @@
+Native 64-bit build on Windows using Microsoft Visual C++ 2017
+==============================================================
+
+These build instructions generate a PLplot that supports interactive and PDF output via Cairo.
+It is mostly statically linked, although it still depends on glib-2.dll and gobject-2.dll.
+This build is completely native without the use of Mingw or Cygwin.
+
+1. Install Microsoft Visual Studio 2017 including the C++ compiler and Windows SDK.
+   (the free Community Edition works fine)
+
+2. Install CMake.
+
+3. Install VCPKG from https://github.com/Microsoft/vcpkg and follow its setup instructions.
+
+4. Install the VCPKG packages cairo, fontconfig, freetype, pango
+   using the target triplet x64-windows-static by running:
+
+   vcpkg.exe install cairo:x64-windows-static fontconfig:x64-windows-static freetype:x64-windows-static pango:x64-windows-static
+
+5. Create a build directory for PLplot.
+
+6. From within the build directory run to generate the build configuration:
+
+   cmake.exe -DENABLE_DYNDRIVERS=OFF -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -DCMAKE_TOOLCHAIN_FILE=<VCPKG_PATH>/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static -G "Visual Studio 15 2017 Win64" <PLPLOT_PATH>
+
+   where <VCPKG_PATH> is the VCPKG installation directory,
+   and   <PLPLOT_PATH> is the path to the PLplot sources,
+   and   <INSTALL_DIR> is the target directory.
+
+7. To build PLplot in Release configuration run:
+
+   cmake --build . --config Release 
+
+8. To install PLplot run:
+
+   cmake --build . --config Release --target INSTALL
+
+9. Manually copy glib-2.dll and gobject-2.dll from <VCPKG_PATH>\installed\x64-windows-static\bin
+   to <INSTALL_DIR>/bin.
+
