@@ -1,0 +1,24 @@
+-
+  image: Visual Studio 2017
+
+  build_script:
+    - ps: .\scripts\build.ps1
+    - mkdir windows
+    - xcopy target\bin\*.dll windows
+    - mkdir windows\plplot
+    - xcopy target\share\plplot5.13.0\*.pal windows\plplot
+    - xcopy target\share\plplot5.13.0\*.fnt windows\plplot    
+    - 7z a plplot_windows.zip windows
+  
+  artifacts:
+    - path: plplot_windows.zip
+      name: plplot_windows
+     
+  deploy:
+    description: 'Windows build'
+    provider: GitHub
+    auth_token:
+      secure: d8TzRRFbB95mYZwrhZUzu0mFIAyYzpnbnvWUatSQlLItsDTBdxMRbnfEzCWitjDW
+    artifact: plplot_windows.zip
+    on:
+      appveyor_repo_tag: true        

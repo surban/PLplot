@@ -33,3 +33,5 @@ tmp/
 /.vs
 /.vscode
 CMakeSettings.json
+/target
+/vcpkg
