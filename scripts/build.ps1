@@ -1,6 +1,6 @@
 $Root = "$PSScriptRoot/.."
 
-$ErrorActionPreference = "Stop"
+#$ErrorActionPreference = "Stop"
 
 Push-Location $Root
 if (-Not (Test-Path vcpkg)) {
@@ -10,7 +10,6 @@ if (-Not (Test-Path vcpkg)) {
     Pop-Location
     .\vcpkg\bootstrap-vcpkg.bat
 }
-#.\vcpkg\vcpkg.exe install cairo:x64-windows-static fontconfig:x64-windows-static freetype:x64-windows-static pango:x64-windows-static
 .\vcpkg\vcpkg.exe install cairo:x64-windows fontconfig:x64-windows freetype:x64-windows pango:x64-windows
 
 if (-Not (Test-Path build)) {
